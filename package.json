@@ -102,6 +102,7 @@
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
     "minimatch": "^3.1.2",
+    "morgan": "^1.10.0",
     "ms": "^2.1.2",
     "natural-compare": "^1.4.0",
     "negotiator": "^0.6.3",

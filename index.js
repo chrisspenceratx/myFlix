@@ -3,6 +3,21 @@ const express = require('express'),
 
 const app = express();
 
+let topMovies = [
+  {title: 'Goodfellas' },
+  {title: 'Godfather 2'},
+  {title: 'Godfather'},
+  {title: 'The Maltese Falcon'},
+  {title: 'Citizen Kane'},
+  {title: 'Sunset Blvd'},
+  {title: 'Tommy Boy'},
+  {title: 'Dumb and Dumber'},
+  {title: 'Shawshank Redemption'},
+  {title: 'A Streetcar Named Desire'}
+
+
+];
+
 app.use(morgan('common'));
 
 app.get('/', (req, res) => {
