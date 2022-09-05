@@ -171,6 +171,23 @@ let movies = [
    
 ];
 
+// CREATE //
+app.post('/users', (req, res) => {
+  const newUser = req.body;
+  if (newUser.name) {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).json(newUser);
+  } else {
+    res.status(400).send('Users need names.')
+  }
+});
+
+// UPDATE //
+
+
+
+// READ //
 app.get('/', (req, res) => {
   res.status(200).json('Thank you for visiting my API!');
 });
@@ -196,6 +213,18 @@ app.get('/movies/genre/:genreName', (req, res) => {
 
   if (genre) {
     res.status(200).json(genre);
+  }
+  else {
+    res.status(400).send('No such genre found.')
+  }
+});
+
+app.get('/movies/directors/:directorName', (req, res) => {
+  const { directorName } = req.params; 
+  const  director = movies.find( movie => movie.Director.Name === directorName ).Director;
+
+  if (director) {
+    res.status(200).json(director);
   }
   else {
     res.status(400).send('No such genre found.')
