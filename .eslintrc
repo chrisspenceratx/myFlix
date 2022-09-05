@@ -1,0 +1,9 @@
+{
+    "extends": [
+        "wesbos"
+    ],
+    "rules": [
+        "no-unused-vars",
+        "prefer-const"
+    ]
+}
