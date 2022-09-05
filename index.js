@@ -17,7 +17,7 @@ let users = [
 
 // variable declared for movie list//
 let movies = [
-  [
+  
     {
       "Title":"Animal World",
       "Description":"A man finds himself deep in debt and is coerced to board a ship that hosts a risky gambling party.",
@@ -168,7 +168,7 @@ let movies = [
       "ImageURL":"https://upload.wikimedia.org/wikipedia/en/5/53/Newsies-Poster.jpg",
       "Featured":false
     }
-  ] 
+   
 ];
 
 app.get('/', (req, res) => {
@@ -192,8 +192,9 @@ app.get('/movies/:title', (req, res) => {
 
 app.get('/movies/genre/:genreName', (req, res) => {
   const { genreName } = req.params; 
-  const  genre = movies.find (movie => movie.Genre.Name === genreName );
-  if (movie) {
+  const  genre = movies.find( movie => movie.Genre.Name === genreName ).Genre;
+
+  if (genre) {
     res.status(200).json(genre);
   }
   else {
