@@ -188,24 +188,23 @@ app.post('/users', (req, res) => {
     users.push(newUser);
     res.status(201).json(newUser);
   } else {
-    res.status(400).send('Users need names.')
+    res.status(400).send('Users need names.');
   }
 });
 
 // UPDATE //
-app.put('/:id', (req, res) => {
-  const id = req.body;
+app.put('users/:id', (req, res) => {
+  const { id } = req.body;
   const updatedUser = req.body;
 
   let user = users.find(user => user.id == id );
 
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser);
-  } else {
-    res.status(400).send('Users need names.')
-  }
+ if (user) {
+  user.name = updatedUser.name;
+  res.status(200).json(user);
+} else {
+    res.status(400).send('no such user');
+}
 });
 
 
@@ -226,7 +225,7 @@ app.get('/movies/:title', (req, res) => {
     res.status(200).json(movie);
   }
   else {
-    res.status(400).send('No such title found.')
+    res.status(400).send('No such title found.');
   }
 });
 
