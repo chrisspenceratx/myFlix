@@ -12,6 +12,15 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 let users = [
+  { id: 1,
+    name: "Kim",
+    favoriteMovies: []
+  },
+  {
+    id: 2,
+    name: "Joe",
+    favoriteMovies: ["The Fountain"]
+  }
 
 ];
 
@@ -184,6 +193,20 @@ app.post('/users', (req, res) => {
 });
 
 // UPDATE //
+app.put('/:id', (req, res) => {
+  const id = req.body;
+  const updatedUser = req.body;
+
+  let user = users.find(user => user.id == id );
+
+  if (newUser.name) {
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    res.status(201).json(newUser);
+  } else {
+    res.status(400).send('Users need names.')
+  }
+});
 
 
 
