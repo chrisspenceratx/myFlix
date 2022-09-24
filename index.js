@@ -1,7 +1,9 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
-const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const uuid = require('uuid');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
@@ -9,7 +11,7 @@ const Movies = Models.Movie;
 const Users = Models.User;
 mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-app.use(bodyParser.json());
+
 // morgan middleware function to log requests to terminal//
 app.use(morgan('common'));
 
@@ -201,16 +203,70 @@ let movies = [
 ];
 
 // CREATE //
+
+//delete the commented out code below//
+// app.post('/users', (req, res) => {
+//   const newUser = req.body;
+//   if (newUser.name) {
+//     newUser.id = uuid.v4();
+//     users.push(newUser);
+//     res.status(201).json(newUser);
+//   } else {
+//     res.status(400).send('Users need names.');
+//   }
+// });
+
+//Add a user
+/* We’ll expect JSON in this format
+{
+  ID: Integer,
+  Username: String,
+  Password: String,
+  Email: String,
+  Birthday: Date
+}*/
 app.post('/users', (req, res) => {
-  const newUser = req.body;
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser);
-  } else {
-    res.status(400).send('Users need names.');
-  }
+  
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Username + 'already exists');
+      } else {
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
+
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => {
+      
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
+
+
+
 
 // UPDATE //
 app.put('/users/:id', (req, res) => {
@@ -240,6 +296,8 @@ app.post('/users/:id/:movieTitle', (req, res) => {
     res.status(400).send('no such user');
 }
 });
+
+
 
 // DELETE//
 app.delete('/users/:id/:movieTitle', (req, res) => {
@@ -279,6 +337,22 @@ app.get('/', (req, res) => {
 app.get('/movies', (req, res) => {
   res.status(200).json(movies);
 });
+
+
+// app.get('/movies', (req, res) => {
+//   Movies.find()
+//     .then((movies) => {
+      
+//       res.status(201).json(movies);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send("Error: " + err);
+//     });
+// });
+
+
+
 
 app.get('/movies/:title', (req, res) => {
   const { title } = req.params; 
