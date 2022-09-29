@@ -168,9 +168,16 @@
         <tr>
             <td>Allow users to add a movie to their list of favorites</td>
             <td>POST</td>
-            <td>None</td>
+            <td>JSON object holding data to add a movie to a FavoriteMovies array.</td>
             <td>/users/:id/:movieTitle</td>
-            <td>A text message indicating whether or not the movie was successfully added to the user's array</td>
+            <td>JSON object holding data with changes made to FavoriteMovies array.</td>
+        </tr>
+        <tr>
+            <td>Allow users to remove a movie from their list of favorites</td>
+            <td>POST</td>
+            <td>JSON object holding data to removie a movie from a FavoriteMovies array.</td>
+            <td>/users/:id/:movieTitle</td>
+            <td>JSON object holding data with changes made to FavoriteMovies array.</td>
         </tr>
         <tr>
             <td>Allow users to remove a movie from their list of favorites</td>
