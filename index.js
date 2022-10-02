@@ -1,3 +1,4 @@
+
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
@@ -39,7 +40,7 @@ let users = [
 let movies = [
   {
     "Title": "E.T",
-    "Description": "E.T. is a 1982 American science fiction film produced and directed by Steven Spielberg and written by Melissa Mathison. It tells the story of Elliott, a boy who befriends an extraterrestrial dubbed E.T., who is left behind on Earth.",
+    "Description": "E.T. is a 1982 American science fiction film produced and directed by Steven Spielberg and written by Melissa Mathison. It tells the story of Elliott, a boy who befriends an extraterrestrial dubbed E.T., who is left behind on Earth.",
     "Genre": {
       "Name": "Drama",
       "Description": "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.[1] Drama of this kind is usually qualified with additional terms that specify its particular super-genre, macro-genre, or micro-genre,[2] such as soap opera, police crime drama, political drama, legal drama, historical drama, domestic drama, teen drama, and comedy-drama (dramedy). These terms tend to indicate a particular setting or subject-matter, or else they qualify the otherwise serious tone of a drama with elements that encourage a broader range of moods. To these ends, a primary element in a drama is the occurrence of conflict—emotional, social, or otherwise—and its resolution in the course of the storyline."
@@ -252,7 +253,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 // READ //
-app.get('/', (req, res) => {
+app.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.status(200).json('Thank you for visiting my API!');
 });
 
@@ -279,54 +280,54 @@ app.get('/users/:Username', (req, res) => {
     });
   });
 
-// app.get('/movies', (req, res) => {
-//   Movies.find()
-//     .then((movies) => {
-      
-//       res.status(201).json(movies);
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send("Error: " + err);
-//     });
-// });
-
-// app.get('/movies/:Title', (req, res) => {
-//   Movies.findOne({Title: req.params.Title })
-//     .then((movie) => {
-      
-//       res.json(movie);
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send("Error: " + err);
-//     });
-// });
-
-// app.get('/movies/genres/:Genre', (req, res) => {
-//   Movies.find({ "Genre.Name": req.params.Genre })
-//     .then((movies) => {
-//       res.send(movies);
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(400).send('Error: ' + err);
-//     })
-// });
-
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movies) => {
+      
       res.status(201).json(movies);
     })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
     });
 });
 
+app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({Title: req.params.Title })
+    .then((movie) => {
+      
+      res.json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
+app.get('/movies/genres/:Genre', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.find({ "Genre.Name": req.params.Genre })
+    .then((movies) => {
+      res.send(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(400).send('Error: ' + err);
+    })
+});
+
+// app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   Movies.find()
+//     .then((movies) => {
+//       res.status(201).json(movies);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//       res.status(500).send('Error: ' + error);
+//     });
+// });
+
 // Returns the description of a Genre (of the first one found)
-app.get('/genre/:genreName', (req, res) => {
+app.get('/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ genreName: req.params.Genre })
     .then((movie) => {
       res.send(movie.Genre.Description);
@@ -337,7 +338,7 @@ app.get('/genre/:genreName', (req, res) => {
     })
 });
 
-app.get('/movies/director/:directorName', (req, res) => {
+app.get('/movies/director/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
    Movies.findOne({ directorName: req.params.directorName })
   .then((movie) => {
     res.json(movie.Director);
