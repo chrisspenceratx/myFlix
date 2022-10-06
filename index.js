@@ -10,6 +10,10 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
+const cors = require('cors');
+app.use(cors());
+
+/* rest of code goes here*/
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
