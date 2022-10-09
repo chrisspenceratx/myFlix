@@ -11,6 +11,9 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
+//express-validator declaration//
+const { check, validationResult } = require('express-validator');
+
 // cors security info below//
 const cors = require('cors');
 //below code shows origins that are authorized//
