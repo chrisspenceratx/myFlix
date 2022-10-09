@@ -16,7 +16,8 @@ let movieSchema = mongoose.Schema({
     ImagePath: String,
     Featured: Boolean
   });
-  
+ 
+  // bcrypt functions below //
   let userSchema = mongoose.Schema({
     Username: {type: String, required: true},
     Password: {type: String, required: true},
